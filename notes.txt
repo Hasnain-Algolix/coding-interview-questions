@@ -1,0 +1,32 @@
+In this problem we have an array of distinct number values, meaning no number repeated in this array, and we also have a target sum. 
+
+const arr = [3, 5, -4, 8, 11, 1, -1, 6]
+const targetSum = 10
+
+
+
+Task:
+  Write a function that is gonna find whether or not there is a pair of numbers in this array that sums up to the target sum. We need to find two numbers that sums to the target sum. There is number 11 and -1, sums of these two numbers is equal to the target sum.
+
+
+
+
+Solution - 1:
+  Use two for loops, and traverse the arrays twice to find the sum. Go through all the numbers and sum that number with the second array numbers, if it is equal to target sum then return that two numbers. This is not optimal from the time complexity point of view, becuase we are using to nested for loops, so it's gonna take O(n^2) time complexity.
+
+
+
+
+Solution - 2:
+  The better to solve this problem is use Hash Table, It will cost some extra space. Traverse our array and store every number in a hash table, which will allow us to get the numbers in constant time O(1) through the hash table. Traverse the array, and at each of the number we are gonna check if the number needed to sum up to the target sum is stored in the hash table. In other words we got the number 10, while traversing the array we got the current number (x), x is the current number that is gonna the changed while traversing the array. We need find target sum x + y = 10. We wanna find the number y such that x + y is equal to 10. If we take x to right side of the equation it will look like this:
+    y = 10 - x
+    This is becuase, x is plus on the left side and after going to right side it will become minus.
+  So we can say y is equal to 10 - x, then we say if y in our hash table, then just return x and y.
+
+
+
+
+Solution - 3:
+  When given us the array didn't told anything about the array is it sorted or not. We can solve this problem in more optimal way without using hash table than the two for loops. First we sort the array and it's gonna take O(n log n), and then we find the answer [11, -1] in O(n) time. So we have totatl time complexity O(n log n). After sorting the array we will add two pointer one at the start of the array and one pointer at the end of the array, we will sum these two numbers from the pointer positions, that they are equal to the target sum or not, also we are gonna check if the sum of two numbers is less than the target sum we will move the left pointer to the right, or if the sum of numbers is greater than the target number than move the right pointer to the left.
+
+Write down and understand how does the code is working and also how they got this time and space complexity.
