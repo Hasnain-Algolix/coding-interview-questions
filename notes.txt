@@ -1,32 +1,57 @@
-In this problem we have an array of distinct number values, meaning no number repeated in this array, and we also have a target sum. 
-
-const arr = [3, 5, -4, 8, 11, 1, -1, 6]
-const targetSum = 10
-
+We have an array of integers, and these integers will always be sorted in asc order. You should not modify the input array, you must create a new output array
 
 
 Task:
-  Write a function that is gonna find whether or not there is a pair of numbers in this array that sums up to the target sum. We need to find two numbers that sums to the target sum. There is number 11 and -1, sums of these two numbers is equal to the target sum.
+  Return the squares of the array, again in asc order
+
+
+Example input and output:
+  const inputArr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+  const outputArr = [1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+
+The sample input array is very simple and does not contain any negative intergers, but what if we have negative integers into the array, then the square of the negative numbers will be greater than the other number in the array.
+  Like:
+  const arr = [-3, 2, 4]
+  const output = [9, 4, 16]
+  const sorted = [4, 9, 16]
+
+  In this situation we need to make sure that our output array should be sorted in asc order.
+
+
+Solution 1:
+O(n log n) Time
+O(n)  Space
+  Generate the squares of all the numbers put them into new output array, sort them and return the output array.
+
+  The actual time complexity is like this:
+    n + n log n
+    ^
+    -- we remove the constants
 
 
 
 
-Solution - 1:
-  Use two for loops, and traverse the arrays twice to find the sum. Go through all the numbers and sum that number with the second array numbers, if it is equal to target sum then return that two numbers. This is not optimal from the time complexity point of view, becuase we are using to nested for loops, so it's gonna take O(n^2) time complexity.
+O (n) = Space Time
+Solution 2:
+  As out input array is sorted in asc order, this problem should be solved in linear time.
+  Initialize a new array, in our array we have negative and positive integers, and we know that if we go to left side or right side, the squares of the integers will be larger, so we will compare the first negative number with last positive number, if we get the absolute number of any negative values that is after removing the minus than that will be greater than the other number.
+  We will add two pointers one at the start and one at the end, and than we will compare the start value with end value, and keep in mind that we are gonna compare absolute values of the array and than adding the squares of those values into new array.
+  If the end is greater than the first than add the end value at the end, and now move the end pointer over to next value. If the start is greater than the end than add the start value and move the pointer over to next value
 
 
+Explanation of the function.
+  Create an empty array to store the squares of the intergers
 
+  Create two variables, one points to the first element of the array and second points to the last element of the array
 
-Solution - 2:
-  The better to solve this problem is use Hash Table, It will cost some extra space. Traverse our array and store every number in a hash table, which will allow us to get the numbers in constant time O(1) through the hash table. Traverse the array, and at each of the number we are gonna check if the number needed to sum up to the target sum is stored in the hash table. In other words we got the number 10, while traversing the array we got the current number (x), x is the current number that is gonna the changed while traversing the array. We need find target sum x + y = 10. We wanna find the number y such that x + y is equal to 10. If we take x to right side of the equation it will look like this:
-    y = 10 - x
-    This is becuase, x is plus on the left side and after going to right side it will become minus.
-  So we can say y is equal to 10 - x, then we say if y in our hash table, then just return x and y.
+  Loop through the array in reverse order, mean loop the arrray from the end
 
+  Inside the loop get the first value of the array using previously created index variables, you need to get first and last element
 
+  Now to check and compare the values you need to get the absolute values of the integers
 
-
-Solution - 3:
-  When given us the array didn't told anything about the array is it sorted or not. We can solve this problem in more optimal way without using hash table than the two for loops. First we sort the array and it's gonna take O(n log n), and then we find the answer [11, -1] in O(n) time. So we have totatl time complexity O(n log n). After sorting the array we will add two pointer one at the start of the array and one pointer at the end of the array, we will sum these two numbers from the pointer positions, that they are equal to the target sum or not, also we are gonna check if the sum of two numbers is less than the target sum we will move the left pointer to the right, or if the sum of numbers is greater than the target number than move the right pointer to the left.
-
-Write down and understand how does the code is working and also how they got this time and space complexity.
+  Check if the small value is greater than the larger value than increae the small value index, and push the item to the squares array
+  
+  If the small value is less then the larger value move the larg value pointer to the left

@@ -1,64 +1,43 @@
-const arr = [3, 5, -4, 8, 11, 1, -1, 6];
-const targetSum = 10;
+const arr = [-7, -5, -4, 3, 6, 8, 9];
 
-// Solution - 1
-// Time O(n^2) | Space O(1)
-const twoNumberSum = (arr, targetSum) => {
-  for (let i = 0; i < arr.length; i++) {
-    const firstNum = arr[i];
-    for (let j = i + 1; j < arr.length; j++) {
-      const secondNum = arr[j];
-      const sum = firstNum + secondNum;
-      if (sum === targetSum) {
-        return [firstNum, secondNum];
-      }
-    }
+// Time = O(n log n)
+//  Space = O (n)
+// Solution 1
+const sortedSquaredArray1 = (arr) => {
+  const output = [];
+  for (const value of arr) {
+    const square = value * value;
+    output.push(square);
   }
-  return [];
+  const sortedOutput = output.sort((a, b) => a - b);
+  return sortedOutput;
 };
 
-// Solution - 2
-// Time O(n) | Space O(n)
-const twoNumberSum2 = (array, targetSum) => {
-  const numbers = {};
-  for (const num of array) {
-    const potentialSum = targetSum - num;
-    if (potentialSum in numbers) {
-      return [potentialSum, num];
+const result1 = sortedSquaredArray1(arr);
+console.log(result1);
+
+// Time = O(n)
+//  Space = O (n)
+// Solution 2
+const sortedSquaredArray = (arr) => {
+  const sortedSquares = [];
+  let smallValueIdx = 0;
+  let largeValueIdx = arr.length - 1;
+  for (let idx = arr.length - 1; idx >= 0; idx--) {
+    let smallerValue = arr[smallValueIdx];
+    let largerValue = arr[largeValueIdx];
+
+    if (Math.abs(smallerValue) >= Math.abs(largerValue)) {
+      sortedSquares[idx] = smallerValue * smallerValue;
+      smallValueIdx++;
     } else {
-      numbers[num] = true;
+      sortedSquares[idx] = largerValue * largerValue;
+      largeValueIdx--;
     }
   }
-  return [];
+
+  return sortedSquares;
 };
 
-// Formula
-// x + y = targetSum
-// y = targetSum - x
-// };
-
-// Solution - 3
-// O(n log n)
-const twoNumberSum3 = (array, targetSum) => {
-  array.sort((a, b) => a - b);
-  let left = 0;
-  let right = array.length - 1;
-  while (left < right) {
-    const currentSum = array[left] + array[right];
-    if (currentSum === targetSum) {
-      return [array[left], array[right]];
-    } else if (currentSum < targetSum) {
-      left++;
-    } else if (currentSum > targetSum) {
-      right--;
-    }
-  }
-  return [];
-};
-
-const result = twoNumberSum(arr, targetSum);
-const result2 = twoNumberSum2(arr, targetSum);
-const result3 = twoNumberSum3(arr, targetSum);
-// console.log(result);
-// console.log(result2);
-// console.log(result3);
+const result = sortedSquaredArray(arr);
+console.log(result);
