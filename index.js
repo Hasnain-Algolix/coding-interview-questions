@@ -1,64 +1,38 @@
-const arr = [3, 5, -4, 8, 11, 1, -1, 6];
-const targetSum = 10;
+const competitions = [
+  ['HTML', 'C#'],
+  ['C#', 'Python'],
+  ['Python', 'HTML'],
+];
 
-// Solution - 1
-// Time O(n^2) | Space O(1)
-const twoNumberSum = (arr, targetSum) => {
-  for (let i = 0; i < arr.length; i++) {
-    const firstNum = arr[i];
-    for (let j = i + 1; j < arr.length; j++) {
-      const secondNum = arr[j];
-      const sum = firstNum + secondNum;
-      if (sum === targetSum) {
-        return [firstNum, secondNum];
-      }
+const results = [0, 0, 1];
+
+const HOME_TEAM_WON = 1;
+
+function tournamentWinner(competitions, results) {
+  let currentBestTeam = '';
+  const scores = { [currentBestTeam]: 0 };
+
+  for (let i = 0; i < competitions.length; i++) {
+    const [homeTeam, awayTeam] = competitions[i];
+    const result = results[i];
+    const winningTeam = result === HOME_TEAM_WON ? homeTeam : awayTeam;
+    updateScores(scores, 3, winningTeam);
+
+    if (scores[winningTeam] > scores[currentBestTeam]) {
+      currentBestTeam = winningTeam;
     }
   }
-  return [];
-};
 
-// Solution - 2
-// Time O(n) | Space O(n)
-const twoNumberSum2 = (array, targetSum) => {
-  const numbers = {};
-  for (const num of array) {
-    const potentialSum = targetSum - num;
-    if (potentialSum in numbers) {
-      return [potentialSum, num];
-    } else {
-      numbers[num] = true;
-    }
+  return currentBestTeam;
+}
+
+function updateScores(scores, points, team) {
+  if (!scores.hasOwnProperty(team)) {
+    scores[team] = 0;
   }
-  return [];
-};
 
-// Formula
-// x + y = targetSum
-// y = targetSum - x
-// };
+  scores[team] += points;
+}
 
-// Solution - 3
-// O(n log n)
-const twoNumberSum3 = (array, targetSum) => {
-  array.sort((a, b) => a - b);
-  let left = 0;
-  let right = array.length - 1;
-  while (left < right) {
-    const currentSum = array[left] + array[right];
-    if (currentSum === targetSum) {
-      return [array[left], array[right]];
-    } else if (currentSum < targetSum) {
-      left++;
-    } else if (currentSum > targetSum) {
-      right--;
-    }
-  }
-  return [];
-};
-
-const result = twoNumberSum(arr, targetSum);
-const result2 = twoNumberSum2(arr, targetSum);
-const result3 = twoNumberSum3(arr, targetSum);
-// console.log(result);
-// console.log(result2);
-// console.log(result3);
+const winner = tournamentWinner(competitions, results);
+console.log('🚀 - Winner: ', winner);

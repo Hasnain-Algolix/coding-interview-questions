@@ -1,32 +1,78 @@
-In this problem we have an array of distinct number values, meaning no number repeated in this array, and we also have a target sum. 
+There is an tournament algorithm taking place, which multiple teams will compete against each other, we are going to have a bunch of different competitions in this tournament, there will be two teams that will compete in each competition, and there is one winner and one loser from all of these competitons.
 
-const arr = [3, 5, -4, 8, 11, 1, -1, 6]
-const targetSum = 10
+Each team will compete against all other teams exactly one time, and this is what we call Round.
 
+There are two inputs for this problem, one is competitions array and one is results array:
 
+const competitions = [
+  ["HTML", "C#"],
+  ["C#", "Python"],
+  ["Python", "HTML"],
+]
 
-Task:
-  Write a function that is gonna find whether or not there is a pair of numbers in this array that sums up to the target sum. We need to find two numbers that sums to the target sum. There is number 11 and -1, sums of these two numbers is equal to the target sum.
-
-
-
-
-Solution - 1:
-  Use two for loops, and traverse the arrays twice to find the sum. Go through all the numbers and sum that number with the second array numbers, if it is equal to target sum then return that two numbers. This is not optimal from the time complexity point of view, becuase we are using to nested for loops, so it's gonna take O(n^2) time complexity.
+const results = [0, 0, 1]
 
 
+We ask to return the winning team, more specifically the name of the winning team.
+
+The team that wins, is that who has most number of wins or the most number of points.
 
 
-Solution - 2:
-  The better to solve this problem is use Hash Table, It will cost some extra space. Traverse our array and store every number in a hash table, which will allow us to get the numbers in constant time O(1) through the hash table. Traverse the array, and at each of the number we are gonna check if the number needed to sum up to the target sum is stored in the hash table. In other words we got the number 10, while traversing the array we got the current number (x), x is the current number that is gonna the changed while traversing the array. We need find target sum x + y = 10. We wanna find the number y such that x + y is equal to 10. If we take x to right side of the equation it will look like this:
-    y = 10 - x
-    This is becuase, x is plus on the left side and after going to right side it will become minus.
-  So we can say y is equal to 10 - x, then we say if y in our hash table, then just return x and y.
+Every time when you win a game you get 3 points and when you lose the game you get 0 points.
+
+It's guarantee there is only one winner, there is no tie in between two teams.
+
+As we have competitions array, and results array, these both arrays have same index, mean the 0 represents the first child array in the array, and 2nd number in the results array represents the second child array, so on and so forth.
+
+The first string in the child array is the name of the Home team and the second string is the name of the away team.
+
+When you see 0 in results team that means away team won that competition, If you see 1 that is home team won that competition
+
+
+You will always be given two teams, so that mean you will have at least one competition.
+
+You competitions array is going to have same length as your results array.
+
+Problems:
+  We need to keep track or each team and how many numbers each time has
+
+
+Solution - :
+  We are gonna create an empty Hash Table, and in this hash table, we will add each team name as key and their scores as the value of the key.
+
+  We are gonna loop the competitions array, and will add a pointer on each array, we want to keep track of each competition itself, which is HTML and C#. We also need to know the index of this competition at. The reason is that we want to access index from the results array, so we figure out what team actually won, in theory we are going to loop both arrays, once we figure out which team is winner, next we need to update score of that team in our scores hash table.
+
+  First we will check if the team exists in the hash table or not, if it exists than update the number, otherwise add this team to the table.
+
+  We can also say if the team is not present in the hash table than that team has not won any game.
+
+  After adding all the teams and their scores in hash table, now we will loop the hash table, and find the team that has most scores than other teams and simply return that team.
+
+
+
+Optimal Solution
+-- We can do all the mentioned things using one loop, to do so first we need to create a variable that is going to keep track of highest score that we currently seen, or infact it will keep track of the team that has highest scores.
+
+Create a new variable:
+  const bestTeam = ''
+
+We will start looping the competitions and results array, and our scores hash table will be empty.
+
+When we loop over the competitions and results array, we will add the winner team into scores hash table, and update the scores of it, but alongside this we will compare the scores that we just updated into the hash table with the current bext team or bestTeam score variable. In simple words while looping the arrays we will compare the winner team with current best team, in this case our current team is empty string we will add empty key and 0 value in the scores hash table.
+
+Now we will lookup the best team scores in the hash tables, which is 0 in our case, and compare it with the scores of the team that just won, we can see c# has the greater scores than the empty string that is current best team, now we will udpdate the current best team with c#
+
+
+Again we will see for the next competition who is the winner, in our case Python is winner, we will add python into hash table along with it scores. Now we will compare winner team (Python) with current best team, so the both teams has same scores, we are not going to update the current best team. We will assume if the Python is best team we will update later on.
+
+
+In the last competition, again the python is winner now we will update the python scores form 3 to 6. Now we will compare winner team scores (Python) with current best team, if it is greater than update the current best team
+
+
+Space complexity is O(k)
 
 
 
 
-Solution - 3:
-  When given us the array didn't told anything about the array is it sorted or not. We can solve this problem in more optimal way without using hash table than the two for loops. First we sort the array and it's gonna take O(n log n), and then we find the answer [11, -1] in O(n) time. So we have totatl time complexity O(n log n). After sorting the array we will add two pointer one at the start of the array and one pointer at the end of the array, we will sum these two numbers from the pointer positions, that they are equal to the target sum or not, also we are gonna check if the sum of two numbers is less than the target sum we will move the left pointer to the right, or if the sum of numbers is greater than the target number than move the right pointer to the left.
 
-Write down and understand how does the code is working and also how they got this time and space complexity.
+
